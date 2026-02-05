@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>부가가치세 가이드</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquareRound@master/nanumsquareround.min.css">
+    <style>
+        :root { 
+            --main-blue: #2563eb; 
+            --bg-gray: #f8f9fa; 
+            --text-black: #1f2937; 
+            --text-gray: #64748b;
+        }
+        
+        body { 
+            font-family: 'NanumSquareRound', sans-serif; 
+            background: #fff; 
+            margin: 0; 
+            padding: 20px; 
+            color: var(--text-black); 
+            line-height: 1.6;
+        }
+
+        h1 { font-size: 22px; color: var(--main-blue); border-bottom: 2px solid #f0f2f5; padding-bottom: 12px; margin-top: 10px; }
+        h3 { font-size: 17px; color: var(--text-black); margin-top: 25px; margin-bottom: 10px; display: flex; align-items: center; }
+        h3::before { content: '✔'; margin-right: 8px; color: var(--main-blue); font-weight: 800; }
+
+        .info-card { background: #f0f4ff; padding: 18px; border-radius: 15px; font-size: 14px; margin-bottom: 15px; border: 1px solid #dbeafe; }
+        
+        .tip-box { background: #f8fafc; padding: 18px; border-radius: 12px; font-size: 14px; border: 1px solid #e5e7eb; margin-bottom: 12px; }
+        .tip-box strong { display: block; font-size: 15px; color: #111; margin-bottom: 6px; }
+        .tip-box p { margin: 0; font-size: 13px; color: var(--text-gray); line-height: 1.5; }
+        .tip-box .highlight { color: var(--main-blue); font-weight: 700; }
+
+        .calc-section { margin-top: 40px; padding-top: 30px; border-top: 2px solid #f0f2f5; }
+        .calc-card { background: #f9fafb; padding: 25px 20px; border-radius: 20px; border: 1px solid #e5e7eb; margin-bottom: 20px; }
+        .calc-title { display: block; font-size: 16px; font-weight: 800; color: var(--main-blue); margin-bottom: 15px; text-align: center; }
+        
+        label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #4b5563; }
+        
+        input { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 16px; margin-bottom: 15px; outline-color: var(--main-blue); background: #fff; color: #000; }
+        
+        .calc-btn { width: 100%; padding: 16px; background: var(--main-blue); color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 16px; transition: opacity 0.2s; cursor: pointer; -webkit-appearance: none; }
+        .calc-btn:active { opacity: 0.8; }
+
+        .result-box { margin-top: 20px; padding: 20px; background: white; border-radius: 12px; display: none; text-align: center; border: 1px solid #dbeafe; }
+        .result-box span { font-size: 13px; color: #64748b; display: block; margin-bottom: 5px; }
+        .result-box strong { display: block; color: var(--main-blue); font-size: 22px; margin-bottom: 15px; }
+        .result-box .divider { border-top: 1px dashed #cbd5e1; margin: 15px 0; }
+    </style>
+</head>
+<body>
+
+    <h1>부가가치세(VAT) 가이드</h1>
+
+    <section>
+        <h3>신고 및 납부 기간</h3>
+        <div class="info-card">
+            ● <strong>일반과세자:</strong> 1월, 7월 (확정신고)<br>
+            ● <strong>간이과세자:</strong> 매년 1월 (1년치 한 번 신고)
+        </div>
+    </section>
+
+    <section>
+        <h3>VAT 절세 핵심 3요소</h3>
+        
+        <div class="tip-box">
+            <strong>1. 매입세액 공제 확인</strong>
+            <p>사업을 위해 지출한 금액에 포함된 VAT는 <span class="highlight">나중에 돌려받거나 낼 세금에서 차감</span>할 수 있습니다. 반드시 '사업자용 신용카드'를 등록하세요.</p>
+        </div>
+
+        <div class="tip-box">
+            <strong>2. 간이과세자 기준 확인</strong>
+            <p>연 매출 <span class="highlight">8,000만원 미만</span>(2024년 기준)이라면 간이과세자로 분류되어 낮은 세율(1.5~4%)을 적용받을 수 있습니다.</p>
+        </div>
+
+        <div class="tip-box">
+            <strong>3. 의제매입세액 공제</strong>
+            <p>음식업이나 제조업을 하시는 분들은 면세 농산물(쌀, 고기 등)을 살 때도 <span class="highlight">일정 비율을 매입세액으로 인정</span>받아 세금을 줄일 수 있습니다.</p>
+        </div>
+    </section>
+
+    <section class="calc-section">
+        <div class="calc-card">
+            <span class="calc-title">📊 VAT 포함·별도 간편 계산기</span>
+            
+            <label>공급 가액 입력 (원 단위)</label>
+            <input type="number" id="v5_amount" placeholder="예: 100000" inputmode="numeric">
+            
+            <button type="button" class="calc-btn" onclick="runVATCalc()">세액 계산하기</button>
+
+            <div id="v5_result" class="result-box">
+                <span>입력하신 금액의 부가세(10%)</span>
+                <strong id="v5_tax">0원</strong>
+                
+                <div class="divider"></div>
+                
+                <span>합계 금액 (공급가액 + 부가세)</span>
+                <strong id="v5_total">0원</strong>
+
+                <p style="font-size: 11px; color: #94a3b8; margin-top: 10px; line-height: 1.4;">
+                    *일반과세자(10%) 기준 계산 결과입니다.<br>
+                    면세나 영세율 대상 품목은 별도 확인이 필요합니다.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div style="height: 50px;"></div>
+
+    <script>
+        function runVATCalc() {
+            var amountVal = document.getElementById('v5_amount').value;
+            var resDiv = document.getElementById('v5_result');
+            var taxText = document.getElementById('v5_tax');
+            var totalText = document.getElementById('v5_total');
+
+            if(!amountVal || amountVal <= 0) {
+                alert("금액을 입력해 주세요.");
+                return;
+            }
+            
+            var amount = parseFloat(amountVal);
+            var vat = amount * 0.1; // 10% 부가세
+            var total = amount + vat;
+
+            resDiv.style.display = 'block';
+            taxText.innerText = Math.floor(vat).toLocaleString() + "원";
+            totalText.innerText = Math.floor(total).toLocaleString() + "원";
+            
+            resDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+</body>
+</html>
