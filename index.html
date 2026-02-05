@@ -3,106 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>세무가이드 - 홈</title>
+    <title>세무 올인원 가이드</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquareRound@master/nanumsquareround.min.css">
     <style>
-        :root { --main-blue: #2563eb; --bg-gray: #f8f9fa; --text-black: #1f2937; }
-        body { font-family: 'NanumSquareRound', sans-serif; background: var(--bg-gray); margin: 0; padding: 20px; color: var(--text-black); }
-        h1 { font-size: 22px; font-weight: 800; color: var(--main-blue); margin-bottom: 5px; }
-        .sub-title { font-size: 14px; color: #6b7280; margin-bottom: 25px; }
+        :root { 
+            --main-blue: #2563eb; 
+            --bg-gray: #f8f9fa; 
+            --text-black: #1f2937; 
+            --sub-text: #9ca3af;
+        }
         
-        /* 캘린더 카드 & 깜빡이 효과 */
-        .calendar-card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; border-left: 5px solid var(--main-blue); }
-        .calendar-card h2 { font-size: 16px; margin: 0 0 10px 0; display: flex; align-items: center; }
-        .tax-alert { font-size: 14px; color: #ef4444; font-weight: 700; margin: 8px 0; }
+        body { 
+            font-family: 'NanumSquareRound', sans-serif; 
+            background: var(--bg-gray); 
+            margin: 0; 
+            padding: 20px; 
+            color: var(--text-black);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* 헤더 섹션 */
+        header { margin-bottom: 25px; }
+        h1 { font-size: 24px; font-weight: 800; color: var(--main-blue); margin: 0; }
+        .sub-title { font-size: 14px; color: #6b7280; margin-top: 5px; }
+
+        /* 세무 일정 카드 (메뉴와 동일한 디자인) */
+        .calendar-card { 
+            background: white; 
+            border-radius: 20px; 
+            padding: 20px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
+            margin-bottom: 25px; 
+        }
+        .calendar-card h2 { font-size: 16px; margin: 0 0 12px 0; color: #374151; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
         
+        .tax-alert { font-size: 14px; color: #ef4444; font-weight: 700; margin: 8px 0; display: flex; align-items: center; }
+        .tax-alert::before { content: '●'; margin-right: 8px; font-size: 10px; }
+
         /* 깜빡이는 애니메이션 */
-        .flash { animation: blink 1s infinite; }
+        .flash { animation: blink 1.2s infinite; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
-        /* 메뉴 그리드 */
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        /* 메뉴 구조 설정 */
+        .menu-container { display: flex; flex-direction: column; gap: 15px; }
+
         .menu-item { 
-            background: white; padding: 25px 15px; border-radius: 20px; 
-            text-decoration: none; color: inherit; text-align: center; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03); transition: transform 0.2s;
-            display: flex; flex-direction: column; align-items: center;
+            background: white; 
+            padding: 20px; 
+            border-radius: 20px; 
+            text-decoration: none; 
+            color: inherit; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
+            transition: transform 0.1s, background 0.2s;
+            display: flex; 
+            align-items: center;
         }
-        .menu-item:active { transform: scale(0.95); background: #f0f4ff; }
-        .icon { font-size: 32px; display: block; margin-bottom: 12px; }
-        .label { font-size: 16px; font-weight: 800; display: block; margin-bottom: 6px; }
-        
-        /* 설명(desc)을 아예 아래줄로 분리 */
-        .desc { 
-            font-size: 12px; color: #9ca3af; font-weight: 400;
-            border-top: 1px solid #f3f4f6; padding-top: 8px; width: 100%;
+
+        .menu-item:active { transform: scale(0.96); background: #f0f4ff; }
+
+        /* 상단 큰 탭 (연말정산) */
+        .full-width { 
+            justify-content: space-between;
+        }
+        .full-width .main-part { display: flex; align-items: center; }
+        .full-width .icon { font-size: 36px; margin-right: 15px; }
+        .full-width .label { font-size: 18px; font-weight: 800; }
+        .full-width .desc { font-size: 13px; color: var(--sub-text); text-align: right; border-left: 1px solid #f1f5f9; padding-left: 15px; }
+
+        /* 하단 그리드 탭 */
+        .menu-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+        }
+        .grid-item { 
+            flex-direction: column; 
+            text-align: center;
+            padding: 25px 15px;
+        }
+        .grid-item .icon { font-size: 32px; margin-bottom: 12px; }
+        .grid-item .label { font-size: 15px; font-weight: 800; margin-bottom: 8px; color: #1e293b; }
+        .grid-item .desc { 
+            font-size: 11px; color: var(--sub-text); 
+            border-top: 1px solid #f1f5f9; padding-top: 8px; width: 100%; 
         }
     </style>
 </head>
 <body>
-    <h1>올인원 세무 가이드</h1>
-    <p class="sub-title">어려운 세금 신고, 핵심만 콕 집어드려요.</p>
+
+    <header>
+        <h1>올인원 세무 가이드</h1>
+        <p class="sub-title">어려운 세금 신고, 핵심만 콕 집어드려요.</p>
+    </header>
 
     <div class="calendar-card">
-        <h2 id="current-month">📅 0월 세무 일정</h2>
-        <p class="tax-alert flash">● 원천세 신고·납부 (매월 10일)</p>
-        <div id="schedule-list">
-            </div>
+        <h2 id="current-month-title">📅 세무 일정 로딩중...</h2>
+        <div id="schedule-container">
+             </div>
     </div>
 
-    <div class="menu-grid">
-        <a href="income-tax.html" class="menu-item">
-            <span class="icon">💰</span>
-            <span class="label">종소세/연말정산</span>
-            <span class="desc">근로자 및 사업자 가이드</span>
+    <div class="menu-container">
+        <a href="year-end.html" class="menu-item full-width">
+            <div class="main-part">
+                <span class="icon">📅</span>
+                <span class="label">연말정산 가이드</span>
+            </div>
+            <span class="desc">직장인을 위한<br>13월의 월급 준비</span>
         </a>
-        <a href="vat.html" class="menu-item">
-            <span class="icon">🧾</span>
-            <span class="label">부가세</span>
-            <span class="desc">개인/법인 사업자 전용</span>
-        </a>
-        <a href="withholding.html" class="menu-item">
-            <span class="icon">🏢</span>
-            <span class="label">원천세+지방세</span>
-            <span class="desc">인건비 및 소득 지급 시</span>
-        </a>
-        <a href="corporate.html" class="menu-item">
-            <span class="icon">🏛️</span>
-            <span class="label">법인세</span>
-            <span class="desc">법인 기업 필수 신고</span>
-        </a>
+
+        <div class="menu-grid">
+            <a href="income-tax.html" class="menu-item grid-item">
+                <span class="icon">💰</span>
+                <span class="label">종합소득세</span>
+                <span class="desc">사업자·프리랜서<br>5월 정기 신고</span>
+            </a>
+
+            <a href="vat.html" class="menu-item grid-item">
+                <span class="icon">🧾</span>
+                <span class="label">부가가치세</span>
+                <span class="desc">개인/법인 사업자<br>1월/7월 필수신고</span>
+            </a>
+
+            <a href="withholding.html" class="menu-item grid-item">
+                <span class="icon">🏢</span>
+                <span class="label">원천/지방세</span>
+                <span class="desc">인건비 지급 시<br>매달 진행하는 신고</span>
+            </a>
+
+            <a href="corporate.html" class="menu-item grid-item">
+                <span class="icon">🏛️</span>
+                <span class="label">법인세</span>
+                <span class="desc">법인 기업을 위한<br>3월 확정 신고 안내</span>
+            </a>
+        </div>
     </div>
 
     <script>
-        // 현재 월 자동 계산 및 일정 표시
-        function updateTaxCalendar() {
+        function initTaxCalendar() {
             const now = new Date();
-            const month = now.getMonth() + 1; // 0부터 시작하므로 +1
+            const month = now.getMonth() + 1;
             
-            // 제목 업데이트
-            document.getElementById('current-month').innerText = `📅 ${month}월 세무 일정`;
+            document.getElementById('current-month-title').innerText = `📅 ${month}월 세무 일정`;
             
-            const scheduleList = document.getElementById('schedule-list');
-            let schedules = '';
+            const container = document.getElementById('schedule-container');
+            // 모든 알림에 flash 클래스 적용
+            let content = '<p class="tax-alert flash">원천세 신고·납부 (매월 10일)</p>';
 
-            // 월별 주요 일정 (예시)
             if (month === 1) {
-                schedules = '<p class="tax-alert">● 부가가치세 확정신고 (1.25)</p>';
+                content += '<p class="tax-alert flash">부가가치세 확정 신고 (~1.25)</p>';
             } else if (month === 2) {
-                schedules = '<p class="tax-alert flash">● 연말정산 확정 신고 (~2.28)</p>';
+                content += '<p class="tax-alert flash">직장인 연말정산 확정 신고 (~2.28)</p>';
+                content += '<p class="tax-alert flash">사업장 현황 신고 (~2.10)</p>';
             } else if (month === 3) {
-                schedules = '<p class="tax-alert flash">● 법인세 신고·납부 (~3.31)</p>';
+                content += '<p class="tax-alert flash">법인세 신고 및 납부 (~3.31)</p>';
             } else if (month === 5) {
-                schedules = '<p class="tax-alert flash">● 종합소득세 신고 (~5.31)</p>';
+                content += '<p class="tax-alert flash">종합소득세 신고 및 납부 (~5.31)</p>';
             } else if (month === 7) {
-                schedules = '<p class="tax-alert">● 부가가치세 1기 확정신고 (7.25)</p>';
+                content += '<p class="tax-alert flash">부가가치세 1기 확정 신고 (~7.25)</p>';
             }
 
-            scheduleList.innerHTML = schedules;
+            container.innerHTML = content;
         }
 
-        // 실행
-        updateTaxCalendar();
+        window.onload = initTaxCalendar;
     </script>
 </body>
 </html>
