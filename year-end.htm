@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>연말정산 가이드</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquareRound@master/nanumsquareround.min.css">
+    <style>
+        :root { 
+            --main-blue: #2563eb; 
+            --bg-gray: #f8f9fa; 
+            --text-black: #1f2937; 
+            --text-gray: #64748b;
+        }
+        
+        body { 
+            font-family: 'NanumSquareRound', sans-serif; 
+            background: #fff; 
+            margin: 0; 
+            padding: 20px; 
+            color: var(--text-black); 
+            line-height: 1.6;
+        }
+
+        h1 { font-size: 22px; color: var(--main-blue); border-bottom: 2px solid #f0f2f5; padding-bottom: 12px; margin-top: 10px; }
+        h3 { font-size: 17px; color: var(--text-black); margin-top: 25px; margin-bottom: 10px; display: flex; align-items: center; }
+        h3::before { content: '✔'; margin-right: 8px; color: var(--main-blue); font-weight: 800; }
+
+        .info-card { background: #f0f4ff; padding: 18px; border-radius: 15px; font-size: 14px; margin-bottom: 15px; border: 1px solid #dbeafe; }
+        
+        /* 3대 공제 박스 스타일 상세화 */
+        .tip-box { background: #f8fafc; padding: 18px; border-radius: 12px; font-size: 14px; border: 1px solid #e5e7eb; margin-bottom: 12px; }
+        .tip-box strong { display: block; font-size: 15px; color: #111; margin-bottom: 6px; }
+        .tip-box p { margin: 0; font-size: 13px; color: var(--text-gray); line-height: 1.5; }
+        .tip-box .highlight { color: var(--main-blue); font-weight: 700; }
+
+        .calc-section { margin-top: 40px; padding-top: 30px; border-top: 2px solid #f0f2f5; }
+        .calc-card { background: #f9fafb; padding: 25px 20px; border-radius: 20px; border: 1px solid #e5e7eb; margin-bottom: 20px; }
+        .calc-title { display: block; font-size: 16px; font-weight: 800; color: var(--main-blue); margin-bottom: 15px; text-align: center; }
+        
+        label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #4b5563; }
+        
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+
+        input { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 16px; margin-bottom: 15px; outline-color: var(--main-blue); background: #fff; color: #000; }
+        
+        .calc-btn { width: 100%; padding: 16px; background: var(--main-blue); color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 16px; transition: opacity 0.2s; cursor: pointer; -webkit-appearance: none; }
+        .calc-btn:active { opacity: 0.8; }
+
+        .result-box { margin-top: 20px; padding: 20px; background: white; border-radius: 12px; display: none; text-align: center; border: 1px solid #dbeafe; }
+        .result-box span { font-size: 14px; color: #64748b; }
+        .result-box strong { display: block; color: var(--main-blue); font-size: 24px; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+    <h1>직장인 연말정산 가이드</h1>
+
+    <section>
+        <h3>신고 기한 및 대상</h3>
+        <div class="info-card">
+            ● <strong>기한:</strong> 매년 1월 ~ 2월 말 (회사 제출용)<br>
+            ● <strong>대상:</strong> 4대 보험에 가입된 근로소득자
+        </div>
+    </section>
+
+    <section>
+        <h3>꼭 챙겨야 할 3대 공제</h3>
+        
+        <div class="tip-box">
+            <strong>1. 인적공제 (기본공제)</strong>
+            <p>나와 생계를 같이하는 부양가족 <span class="highlight">1인당 연 150만원</span>을 소득에서 빼줍니다. 부모님(만 60세 이상), 자녀(만 20세 이하)가 대상이며 연 소득금액이 100만원 이하여야 합니다.</p>
+        </div>
+
+        <div class="tip-box">
+            <strong>2. 주택 관련 공제 (월세/청약)</strong>
+            <p>무주택 세대주라면 <span class="highlight">월세 지불액의 최대 17%</span>를 세금에서 깎아줍니다. 청약통장 납입액은 <span class="highlight">40%까지 소득공제</span>가 가능하니 무주택 확인서를 미리 제출하세요.</p>
+        </div>
+
+        <div class="tip-box">
+            <strong>3. 금융 공제 (연금저축/IRP)</strong>
+            <p>연금저축과 IRP 합산 <span class="highlight">최대 900만원 납입액</span>까지 세액공제 혜택을 줍니다. 소득에 따라 결정세액이 많다면 가장 확실하게 세금을 줄일 수 있는 '세테크' 수단입니다.</p>
+        </div>
+    </section>
+
+    <section class="calc-section">
+        <div class="calc-card">
+            <span class="calc-title">🧮 신용카드 공제 문턱 계산기</span>
+            <label>나의 연봉 입력 (만원 단위)</label>
+            <input type="number" id="v1_salary" placeholder="예: 4500" inputmode="numeric">
+            <button type="button" class="calc-btn" onclick="runThresholdCalc()">공제 시작 금액 확인하기</button>
+
+            <div id="v1_result" class="result-box">
+                <span>카드 사용액이 이 금액을 넘어야 합니다</span>
+                <strong id="v1_value">0원</strong>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="calc-card">
+            <span class="calc-title">💰 예상 환급액 시뮬레이터</span>
+            <label>나의 연봉 입력 (만원 단위)</label>
+            <input type="number" id="v2_salary" placeholder="예: 4500" inputmode="numeric">
+            <label>총 카드/현금 사용액 (만원 단위)</label>
+            <input type="number" id="v2_spend" placeholder="예: 2000" inputmode="numeric">
+            <button type="button" class="calc-btn" onclick="runRefundCalc()">나의 예상 환급액은?</button>
+
+            <div id="v2_result" class="result-box">
+                <span id="v2_label">카드 공제로 인한 예상 환급액</span>
+                <strong id="v2_value">0원</strong>
+                <p id="v2_tip" style="font-size: 11px; color: #94a3b8; margin-top: 10px; line-height: 1.4;">
+                    *문턱 초과 사용액의 약 15%~20% 공제를 가정한 추정치입니다.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div style="height: 50px;"></div>
+
+    <script>
+        function runThresholdCalc() {
+            var salaryVal = document.getElementById('v1_salary').value;
+            var resultDiv = document.getElementById('v1_result');
+            var valueText = document.getElementById('v1_value');
+
+            if(!salaryVal || salaryVal <= 0) {
+                alert("연봉을 입력해 주세요.");
+                return;
+            }
+            var threshold = (parseFloat(salaryVal) * 10000) * 0.25;
+            resultDiv.style.display = 'block';
+            valueText.innerText = Math.floor(threshold).toLocaleString() + "원";
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function runRefundCalc() {
+            var sVal = document.getElementById('v2_salary').value;
+            var pVal = document.getElementById('v2_spend').value;
+            var resDiv = document.getElementById('v2_result');
+            var valText = document.getElementById('v2_value');
+            var labText = document.getElementById('v2_label');
+            var tipText = document.getElementById('v2_tip');
+
+            if(!sVal || !pVal) {
+                alert("연봉과 사용액을 모두 입력해 주세요.");
+                return;
+            }
+
+            var salary = parseFloat(sVal);
+            var spend = parseFloat(pVal);
+            var threshold = salary * 0.25; 
+            var overSpend = spend - threshold;
+
+            resDiv.style.display = 'block';
+
+            if(overSpend <= 0) {
+                labText.innerText = "카드 공제 문턱 미달";
+                valText.innerText = "0원";
+                valText.style.color = "#9ca3af";
+                tipText.innerText = "*사용액이 연봉의 25%를 넘어야 환급이 시작됩니다.";
+            } else {
+                var taxRate = 0.15;
+                if(salary <= 1400) taxRate = 0.06;
+                else if(salary > 5000) taxRate = 0.24;
+                var refund = (overSpend * 0.20) * taxRate * 10000;
+                labText.innerText = "카드 공제로 인한 예상 환급액";
+                valText.innerText = "약 " + Math.floor(refund).toLocaleString() + "원";
+                valText.style.color = "var(--main-blue)";
+                tipText.innerText = "*문턱 초과 사용액의 약 15%~20% 공제를 가정한 추정치입니다.";
+            }
+            resDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+</body>
+</html>
