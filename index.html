@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>세무 올인원 가이드</title>
+    <title>올인원 세무 가이드</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquareRound@master/nanumsquareround.min.css">
     <style>
         :root { 
@@ -27,7 +27,7 @@
         h1 { font-size: 24px; font-weight: 800; color: var(--main-blue); margin: 0; }
         .sub-title { font-size: 14px; color: #6b7280; margin-top: 5px; }
 
-        /* 세무 일정 카드 (메뉴와 동일한 디자인) */
+        /* 세무 일정 카드 */
         .calendar-card { 
             background: white; 
             border-radius: 20px; 
@@ -87,6 +87,16 @@
             font-size: 11px; color: var(--sub-text); 
             border-top: 1px solid #f1f5f9; padding-top: 8px; width: 100%; 
         }
+
+        .footer-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .footer-link a {
+            color: #94a3b8;
+            font-size: 12px;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -99,7 +109,7 @@
     <div class="calendar-card">
         <h2 id="current-month-title">📅 세무 일정 로딩중...</h2>
         <div id="schedule-container">
-             </div>
+            </div>
     </div>
 
     <div class="menu-container">
@@ -118,23 +128,27 @@
                 <span class="desc">사업자·프리랜서<br>5월 정기 신고</span>
             </a>
 
-            <a href="vat.html" class="menu-item grid-item">
+            <a href="vat-tax.html" class="menu-item grid-item">
                 <span class="icon">🧾</span>
                 <span class="label">부가가치세</span>
                 <span class="desc">개인/법인 사업자<br>1월/7월 필수신고</span>
             </a>
 
-            <a href="withholding.html" class="menu-item grid-item">
+            <a href="withholding-tax.html" class="menu-item grid-item">
                 <span class="icon">🏢</span>
                 <span class="label">원천/지방세</span>
                 <span class="desc">인건비 지급 시<br>매달 진행하는 신고</span>
             </a>
 
-            <a href="corporate.html" class="menu-item grid-item">
+            <a href="corporate-tax.html" class="menu-item grid-item">
                 <span class="icon">🏛️</span>
                 <span class="label">법인세</span>
                 <span class="desc">법인 기업을 위한<br>3월 확정 신고 안내</span>
             </a>
+        </div>
+
+        <div class="footer-link">
+            <a href="privacy.html">개인정보처리방침</a>
         </div>
     </div>
 
@@ -146,7 +160,6 @@
             document.getElementById('current-month-title').innerText = `📅 ${month}월 세무 일정`;
             
             const container = document.getElementById('schedule-container');
-            // 모든 알림에 flash 클래스 적용
             let content = '<p class="tax-alert flash">원천세 신고·납부 (매월 10일)</p>';
 
             if (month === 1) {
@@ -160,6 +173,8 @@
                 content += '<p class="tax-alert flash">종합소득세 신고 및 납부 (~5.31)</p>';
             } else if (month === 7) {
                 content += '<p class="tax-alert flash">부가가치세 1기 확정 신고 (~7.25)</p>';
+            } else {
+                content += '<p style="font-size:13px; color:#64748b; margin-left:20px;">이번 달은 정기 확정 신고 일정이 없습니다.</p>';
             }
 
             container.innerHTML = content;
