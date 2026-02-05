@@ -86,7 +86,7 @@
             <span class="calc-title">📊 VAT 포함·별도 간편 계산기</span>
             
             <label>공급 가액 입력 (원 단위)</label>
-            <input type="number" id="v5_amount" placeholder="예: 100000" inputmode="numeric">
+            <input type="text" id="v5_amount" placeholder="예: 100,000" inputmode="numeric" oninput="formatNumber(this)">
             
             <button type="button" class="calc-btn" onclick="runVATCalc()">세액 계산하기</button>
 
@@ -110,18 +110,29 @@
     <div style="height: 50px;"></div>
 
     <script>
+        // 천 단위 콤마 포맷 함수
+        function formatNumber(obj) {
+            let value = obj.value.replace(/[^0-9]/g, ""); // 숫자만 추출
+            if (value.length > 0) {
+                obj.value = Number(value).toLocaleString();
+            } else {
+                obj.value = "";
+            }
+        }
+
         function runVATCalc() {
-            var amountVal = document.getElementById('v5_amount').value;
+            // 콤마 제거 후 숫자만 가져오기
+            var rawValue = document.getElementById('v5_amount').value.replace(/,/g, "");
             var resDiv = document.getElementById('v5_result');
             var taxText = document.getElementById('v5_tax');
             var totalText = document.getElementById('v5_total');
 
-            if(!amountVal || amountVal <= 0) {
+            if(!rawValue || rawValue <= 0) {
                 alert("금액을 입력해 주세요.");
                 return;
             }
             
-            var amount = parseFloat(amountVal);
+            var amount = parseFloat(rawValue);
             var vat = amount * 0.1; // 10% 부가세
             var total = amount + vat;
 
