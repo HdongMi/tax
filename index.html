@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>세무가이드 - 홈</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquareRound@master/nanumsquareround.min.css">
+    <style>
+        :root { --main-blue: #2563eb; --bg-gray: #f8f9fa; --text-black: #1f2937; }
+        body { font-family: 'NanumSquareRound', sans-serif; background: var(--bg-gray); margin: 0; padding: 20px; color: var(--text-black); }
+        h1 { font-size: 22px; font-weight: 800; color: var(--main-blue); margin-bottom: 5px; }
+        .sub-title { font-size: 14px; color: #6b7280; margin-bottom: 25px; }
+        
+        /* 캘린더 카드 & 깜빡이 효과 */
+        .calendar-card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; border-left: 5px solid var(--main-blue); }
+        .calendar-card h2 { font-size: 16px; margin: 0 0 10px 0; display: flex; align-items: center; }
+        .tax-alert { font-size: 14px; color: #ef4444; font-weight: 700; margin: 8px 0; }
+        
+        /* 깜빡이는 애니메이션 */
+        .flash { animation: blink 1s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+        /* 메뉴 그리드 */
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .menu-item { 
+            background: white; padding: 25px 15px; border-radius: 20px; 
+            text-decoration: none; color: inherit; text-align: center; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03); transition: transform 0.2s;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .menu-item:active { transform: scale(0.95); background: #f0f4ff; }
+        .icon { font-size: 32px; display: block; margin-bottom: 12px; }
+        .label { font-size: 16px; font-weight: 800; display: block; margin-bottom: 6px; }
+        
+        /* 설명(desc)을 아예 아래줄로 분리 */
+        .desc { 
+            font-size: 12px; color: #9ca3af; font-weight: 400;
+            border-top: 1px solid #f3f4f6; padding-top: 8px; width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>올인원 세무 가이드</h1>
+    <p class="sub-title">어려운 세금 신고, 핵심만 콕 집어드려요.</p>
+
+    <div class="calendar-card">
+        <h2 id="current-month">📅 0월 세무 일정</h2>
+        <p class="tax-alert flash">● 원천세 신고·납부 (매월 10일)</p>
+        <div id="schedule-list">
+            </div>
+    </div>
+
+    <div class="menu-grid">
+        <a href="income-tax.html" class="menu-item">
+            <span class="icon">💰</span>
+            <span class="label">종소세/연말정산</span>
+            <span class="desc">근로자 및 사업자 가이드</span>
+        </a>
+        <a href="vat.html" class="menu-item">
+            <span class="icon">🧾</span>
+            <span class="label">부가세</span>
+            <span class="desc">개인/법인 사업자 전용</span>
+        </a>
+        <a href="withholding.html" class="menu-item">
+            <span class="icon">🏢</span>
+            <span class="label">원천세+지방세</span>
+            <span class="desc">인건비 및 소득 지급 시</span>
+        </a>
+        <a href="corporate.html" class="menu-item">
+            <span class="icon">🏛️</span>
+            <span class="label">법인세</span>
+            <span class="desc">법인 기업 필수 신고</span>
+        </a>
+    </div>
+
+    <script>
+        // 현재 월 자동 계산 및 일정 표시
+        function updateTaxCalendar() {
+            const now = new Date();
+            const month = now.getMonth() + 1; // 0부터 시작하므로 +1
+            
+            // 제목 업데이트
+            document.getElementById('current-month').innerText = `📅 ${month}월 세무 일정`;
+            
+            const scheduleList = document.getElementById('schedule-list');
+            let schedules = '';
+
+            // 월별 주요 일정 (예시)
+            if (month === 1) {
+                schedules = '<p class="tax-alert">● 부가가치세 확정신고 (1.25)</p>';
+            } else if (month === 2) {
+                schedules = '<p class="tax-alert flash">● 연말정산 확정 신고 (~2.28)</p>';
+            } else if (month === 3) {
+                schedules = '<p class="tax-alert flash">● 법인세 신고·납부 (~3.31)</p>';
+            } else if (month === 5) {
+                schedules = '<p class="tax-alert flash">● 종합소득세 신고 (~5.31)</p>';
+            } else if (month === 7) {
+                schedules = '<p class="tax-alert">● 부가가치세 1기 확정신고 (7.25)</p>';
+            }
+
+            scheduleList.innerHTML = schedules;
+        }
+
+        // 실행
+        updateTaxCalendar();
+    </script>
+</body>
+</html>
