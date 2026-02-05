@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>종합소득세 가이드</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquareRound@master/nanumsquareround.min.css">
+    <style>
+        :root { 
+            --main-blue: #2563eb; 
+            --bg-gray: #f8f9fa; 
+            --text-black: #1f2937; 
+            --text-gray: #64748b;
+        }
+        
+        body { 
+            font-family: 'NanumSquareRound', sans-serif; 
+            background: #fff; 
+            margin: 0; 
+            padding: 20px; 
+            color: var(--text-black); 
+            line-height: 1.6;
+        }
+
+        h1 { font-size: 22px; color: var(--main-blue); border-bottom: 2px solid #f0f2f5; padding-bottom: 12px; margin-top: 10px; }
+        h3 { font-size: 17px; color: var(--text-black); margin-top: 25px; margin-bottom: 10px; display: flex; align-items: center; }
+        h3::before { content: '✔'; margin-right: 8px; color: var(--main-blue); font-weight: 800; }
+
+        .info-card { background: #f0f4ff; padding: 18px; border-radius: 15px; font-size: 14px; margin-bottom: 15px; border: 1px solid #dbeafe; }
+        
+        .tip-box { background: #f8fafc; padding: 18px; border-radius: 12px; font-size: 14px; border: 1px solid #e5e7eb; margin-bottom: 12px; }
+        .tip-box strong { display: block; font-size: 15px; color: #111; margin-bottom: 6px; }
+        .tip-box p { margin: 0; font-size: 13px; color: var(--text-gray); line-height: 1.5; }
+        .tip-box .highlight { color: var(--main-blue); font-weight: 700; }
+
+        .calc-section { margin-top: 40px; padding-top: 30px; border-top: 2px solid #f0f2f5; }
+        .calc-card { background: #f9fafb; padding: 25px 20px; border-radius: 20px; border: 1px solid #e5e7eb; margin-bottom: 20px; }
+        .calc-title { display: block; font-size: 16px; font-weight: 800; color: var(--main-blue); margin-bottom: 15px; text-align: center; }
+        
+        label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #4b5563; }
+        
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+
+        input { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 16px; margin-bottom: 15px; outline-color: var(--main-blue); background: #fff; color: #000; }
+        
+        .calc-btn { width: 100%; padding: 16px; background: var(--main-blue); color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 16px; transition: opacity 0.2s; cursor: pointer; -webkit-appearance: none; }
+        .calc-btn:active { opacity: 0.8; }
+
+        .result-box { margin-top: 20px; padding: 20px; background: white; border-radius: 12px; display: none; text-align: center; border: 1px solid #dbeafe; }
+        .result-box span { font-size: 14px; color: #64748b; }
+        .result-box strong { display: block; color: var(--main-blue); font-size: 24px; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+    <h1>개인사업자·프리랜서 종소세 가이드</h1>
+
+    <section>
+        <h3>신고 기한 및 대상</h3>
+        <div class="info-card">
+            ● <strong>기한:</strong> 매년 5월 1일 ~ 5월 31일<br>
+            ● <strong>대상:</strong> 사업소득, 프리랜서 소득, 투잡러 등
+        </div>
+    </section>
+
+    <section>
+        <h3>절세에 도움되는 3대 팁</h3>
+        
+        <div class="tip-box">
+            <strong>1. 경비 처리 (필요경비)</strong>
+            <p>사업용으로 사용한 식비, 통신비, 유류비 등은 <span class="highlight">모두 경비 처리</span>가 가능합니다. 홈택스에 사업용 신용카드를 등록하는 것이 첫걸음입니다.</p>
+        </div>
+
+        <div class="tip-box">
+            <strong>2. 노란우산공제 활용</strong>
+            <p>사업자의 퇴직금 마련을 위한 제도로, 납입액에 대해 <span class="highlight">최대 500만원 소득공제</span>가 가능합니다. 소득이 높을수록 절세 효과가 큽니다.</p>
+        </div>
+
+        <div class="tip-box">
+            <strong>3. 단순경비율 활용</strong>
+            <p>연 매출액이 일정 기준 이하인 신규 사업자라면 별도의 장부 없이 <span class="highlight">정부 정함 비율(약 60~80%)</span>만큼 비용을 인정받을 수 있어 매우 유리합니다.</p>
+        </div>
+    </section>
+
+    <section class="calc-section">
+        <div class="calc-card">
+            <span class="calc-title">💸 종소세 간편 예상 세액 계산기</span>
+            <p style="font-size: 12px; color: #666; text-align: center; margin-top: -10px; margin-bottom: 20px;">평균 단순경비율을 적용한 추정치입니다.</p>
+            
+            <label>나의 총 매출액 입력 (만원 단위)</label>
+            <input type="number" id="v3_revenue" placeholder="예: 3000" inputmode="numeric">
+            
+            <button type="button" class="calc-btn" onclick="runGeneralTaxCalc()">예상 세액 확인하기</button>
+
+            <div id="v3_result" class="result-box">
+                <span id="v3_label">납부 예정 세액 (추정)</span>
+                <strong id="v3_value">0원</strong>
+                <p style="font-size: 11px; color: #94a3b8; margin-top: 10px; line-height: 1.4;">
+                    *기본 소득공제 및 표준 세율을 적용한 값입니다.<br>
+                    실제 세금은 개별 공제 항목에 따라 달라집니다.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div style="height: 50px;"></div>
+
+    <script>
+        function runGeneralTaxCalc() {
+            var revVal = document.getElementById('v3_revenue').value;
+            var resDiv = document.getElementById('v3_result');
+            var valText = document.getElementById('v3_value');
+
+            if(!revVal || revVal <= 0) {
+                alert("매출액을 입력해 주세요.");
+                return;
+            }
+            
+            // 단순화된 계산 로직 (경비율 60% 가정)
+            var revenue = parseFloat(revVal) * 10000;
+            var incomeAmount = revenue * 0.4; // 60%는 경비, 40%가 소득
+            
+            // 과세표준 (기본공제 150만원 차감)
+            var taxableIncome = incomeAmount - 1500000;
+            if(taxableIncome < 0) taxableIncome = 0;
+
+            // 소득세율 구간 (2024년 기준 간이 적용)
+            var tax = 0;
+            if(taxableIncome <= 14000000) {
+                tax = taxableIncome * 0.06;
+            } else if(taxableIncome <= 50000000) {
+                tax = (taxableIncome * 0.15) - 1260000;
+            } else {
+                tax = (taxableIncome * 0.24) - 4300000;
+            }
+
+            resDiv.style.display = 'block';
+            valText.innerText = "약 " + Math.floor(tax).toLocaleString() + "원";
+            
+            resDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+</body>
+</html>
