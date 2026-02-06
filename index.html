@@ -36,15 +36,10 @@
         .skeleton-sub { height: 12px; width: 60%; }
         .skeleton-item { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9; }
 
-        /* ✨ 스플래시 화면 및 애니메이션 */
+        /* ✨ 스플래시 화면 */
         #landingPage { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: var(--landing-display); flex-direction: column; justify-content: center; align-items: center; z-index: 10000; transition: opacity 0.5s ease, visibility 0.5s; text-align: center; }
         
-        .landing-logo { 
-            font-size: 80px; 
-            margin-bottom: 20px; 
-            animation: bounce 2s infinite; 
-        }
-
+        .landing-logo { font-size: 80px; margin-bottom: 20px; animation: bounce 2s infinite; }
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
             40% {transform: translateY(-30px);}
@@ -56,36 +51,22 @@
         .start-btn { background: var(--main-blue); color: white; border: none; padding: 18px 60px; border-radius: 50px; font-size: 18px; font-weight: 800; cursor: pointer; box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2); }
         .fade-out { opacity: 0; visibility: hidden; }
 
-        /* 🌀 로딩 오버레이 스타일 */
+        /* 🌀 로딩 오버레이 */
         .loading-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255, 255, 255, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 20000;
+            display: flex; justify-content: center; align-items: center; z-index: 20000;
         }
         .hidden { display: none !important; }
 
         .loader-content { text-align: center; }
         .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--main-blue);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
+            width: 40px; height: 40px; border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--main-blue); border-radius: 50%;
+            animation: spin 1s linear infinite; margin: 0 auto 15px;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        .loader-content p {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--text-black);
-        }
+        .loader-content p { font-size: 14px; font-weight: 700; color: var(--text-black); }
 
         /* 메인 UI 스타일 */
         body { font-family: 'NanumSquareRound', sans-serif; background: var(--bg-gray); margin: 0; padding: 20px; color: var(--text-black); -webkit-tap-highlight-color: transparent; }
@@ -195,7 +176,7 @@
     <script>
         const loadingOverlay = document.getElementById('loadingOverlay');
 
-        // 스플래시 화면 제어
+        // 스플래시 제어
         document.getElementById('startBtn').addEventListener('click', function() {
             const landing = document.getElementById('landingPage');
             sessionStorage.setItem('tax_guide_viewed', 'true');
@@ -203,17 +184,7 @@
             setTimeout(() => { landing.remove(); }, 500);
         });
 
-        window.onpageshow = function(event) {
-            // 뒤로가기로 돌아왔을 때 로딩창 숨기기
-            loadingOverlay.classList.add('hidden');
-            
-            if (event.persisted || sessionStorage.getItem('tax_guide_viewed') === 'true') {
-                const landing = document.getElementById('landingPage');
-                if (landing) landing.style.display = 'none';
-            }
-        };
-
-        // 세무 일정 초기화
+        // 세무 일정
         function initTaxCalendar() {
             const month = new Date().getMonth() + 1;
             document.getElementById('current-month-title').innerText = `📅 ${month}월 세무 일정`;
@@ -229,10 +200,16 @@
             container.innerHTML = content + (scheduleMap[month] || '');
         }
 
-        // 뉴스 데이터 호출 및 로딩 이벤트 연결
+        // 🎯 뉴스 전용 로딩 함수
+        function handleNewsClick() {
+            loadingOverlay.classList.remove('hidden');
+            // 새 창 이동이므로 3초 후 자동 제거
+            setTimeout(() => { loadingOverlay.classList.add('hidden'); }, 3000);
+        }
+
         async function fetchTaxNews() {
             const listContainer = document.getElementById('news-list');
-            const keywords = ['국세청', '연말정산', '부가세', '종합소득세', '법인세'];
+            const keywords = ['국세청', '세무', '부가세'];
             const query = encodeURIComponent(keywords[Math.floor(Math.random() * keywords.length)]);
             const apiTarget = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(`https://news.google.com/rss/search?q=${query}+when:7d&hl=ko&gl=KR&ceid=KR:ko`)}`;
 
@@ -242,29 +219,28 @@
                 listContainer.innerHTML = ''; 
 
                 if (data.items && data.items.length > 0) {
-                    data.items.slice(0, 6).forEach(item => {
+                    data.items.slice(0, 5).forEach(item => {
                         const li = document.createElement('li');
                         li.className = 'news-item';
                         const d = new Date(item.pubDate);
                         const dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
                         
-                        // 링크 요소 생성
                         const a = document.createElement('a');
                         a.href = item.link;
                         a.target = "_blank";
+                        a.className = "news-link"; // 클래스 부여
                         a.innerText = item.title;
                         
-                        // 클릭 시 로딩 오버레이 표시
-                        a.addEventListener('click', () => {
-                            loadingOverlay.classList.remove('hidden');
-                            // 3초 후 자동으로 숨김 처리 (사용자 경험 보호)
-                            setTimeout(() => { loadingOverlay.classList.add('hidden'); }, 3000);
-                        });
-
                         li.appendChild(a);
                         li.innerHTML += `<span>${dateStr} | 세무 뉴스</span>`;
                         listContainer.appendChild(li);
                     });
+
+                    // 🎯 생성된 뉴스 링크들에만 로딩 이벤트 바인딩
+                    document.querySelectorAll('.news-link').forEach(link => {
+                        link.addEventListener('click', handleNewsClick);
+                    });
+
                 } else {
                     listContainer.innerHTML = '<li>최신 소식이 없습니다.</li>';
                 }
@@ -276,6 +252,14 @@
         window.onload = () => {
             initTaxCalendar();
             fetchTaxNews();
+        };
+
+        window.onpageshow = function(event) {
+            loadingOverlay.classList.add('hidden');
+            if (event.persisted || sessionStorage.getItem('tax_guide_viewed') === 'true') {
+                const landing = document.getElementById('landingPage');
+                if (landing) landing.style.display = 'none';
+            }
         };
     </script>
 </body>
